@@ -43,3 +43,6 @@ Podfile.lock
 *.ipa
 *.dSYM.zip
 *.dSYM
+
+# API Keys — never commit this file
+**/APIKeys.plist

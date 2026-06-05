@@ -345,8 +345,11 @@ struct HomeView: View {
         }
         
         guard let encodedQuery = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let newsKey = Bundle.main.object(forInfoDictionaryKey: "NEWS_API_KEY") as? String,
+              let keysURL = Bundle.main.url(forResource: "APIKeys", withExtension: "plist"),
+              let dict = NSDictionary(contentsOf: keysURL),
+              let newsKey = dict["NEWS_API_KEY"] as? String,
               !newsKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              newsKey != "ADD_YOUR_NEWS_API_KEY_HERE",
               let url = URL(string: "https://newsapi.org/v2/everything?q=\(encodedQuery)+food&sortBy=relevance&apiKey=\(newsKey)") else {
             return
         }

@@ -42,10 +42,12 @@ class AeroAIService {
     // MARK: - Private Helper
     
     private func geminiAPIKey() -> String {
-        // Look for the Key Name "GEMINI_API_KEY" instead of the long hardcoded string
-        guard let key = Bundle.main.object(forInfoDictionaryKey: "GEMINI_API_KEY") as? String,
-              !key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            fatalError("Missing GEMINI_API_KEY in Info.plist. Add your Gemini API key to Info.plist under the key name GEMINI_API_KEY.")
+        guard let url = Bundle.main.url(forResource: "APIKeys", withExtension: "plist"),
+              let dict = NSDictionary(contentsOf: url),
+              let key = dict["GEMINI_API_KEY"] as? String,
+              !key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              key != "ADD_YOUR_GEMINI_KEY_HERE" else {
+            fatalError("Missing GEMINI_API_KEY in APIKeys.plist. Add your Gemini API key there.")
         }
         return key
     }
@@ -78,12 +80,12 @@ class AeroAIService {
 
     private func chatModel() -> GenerativeModel {
         if let model = _chatModel { return model }
-        
+
         let model = GenerativeModel(
-            name: "gemini-1.5-flash",
+            name: "gemini-2.5-flash",
             apiKey: geminiAPIKey(),
             generationConfig: GenerationConfig(temperature: 0.7, maxOutputTokens: 2000),
-            systemInstruction: ModelContent(role: "system", parts: [.text(Self.systemManifesto)])
+            systemInstruction: ModelContent(role: "system", parts: [.text(Self.chatManifesto)])
         )
         _chatModel = model
         return model
@@ -93,7 +95,7 @@ class AeroAIService {
         if let model = _insightModel { return model }
         
         let model = GenerativeModel(
-            name: "gemini-1.5-flash",
+            name: "gemini-2.5-flash",
             apiKey: geminiAPIKey(),
             generationConfig: GenerationConfig(temperature: 0.3, maxOutputTokens: 512, responseMIMEType: "application/json"),
             systemInstruction: ModelContent(role: "system", parts: [.text(Self.systemManifesto)])
@@ -106,7 +108,7 @@ class AeroAIService {
         if let model = _recipeModel { return model }
         
         let model = GenerativeModel(
-            name: "gemini-1.5-flash",
+            name: "gemini-2.5-flash",
             apiKey: geminiAPIKey(),
             generationConfig: GenerationConfig(temperature: 0.5, maxOutputTokens: 2000, responseMIMEType: "application/json"),
             systemInstruction: ModelContent(role: "system", parts: [.text(Self.systemManifesto)])
@@ -116,7 +118,14 @@ class AeroAIService {
     }
     
     
-    // MARK: - Shared System Prompt
+    // MARK: - System Prompts
+    private static let chatManifesto = """
+    You are the Aero Intelligence Cluster — a kitchen assistant AI with a clinical, brutalist tone.
+    Help users manage their food inventory, suggest recipes, and reduce food waste.
+    Respond in clear, direct plain text. No JSON, no code blocks, no markdown formatting.
+    Keep responses concise and actionable.
+    """
+
     private static let systemManifesto = """
     You are the Aero Intelligence Cluster. Respond in a clinical, brutalist tone.
     CRITICAL OUTPUT RULES:
@@ -298,6 +307,9 @@ class AeroAIService {
 
         let desc = nsErr.localizedDescription.lowercased()
 
+        if desc.contains("not found") || desc.contains("404") || desc.contains("not supported") {
+            return AeroError.serviceUnavailable
+        }
         if desc.contains("api key") || desc.contains("401") || desc.contains("unauthenticated") {
             return AeroError.invalidAPIKey
         }
