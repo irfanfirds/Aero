@@ -110,17 +110,30 @@ cd Aero
 4. Download the generated `GoogleService-Info.plist`.
 5. Place it at `Aero/Aero/GoogleService-Info.plist` (replace the existing placeholder file).
 
-### 3. Configure the Gemini API key
+### 3. Configure API keys
 
-1. Go to [Google AI Studio](https://aistudio.google.com) and create a free API key.
-2. Open `Aero/Aero/Info.plist` in Xcode.
-3. Update the value for the key `GEMINI_API_KEY` with your key.
+API keys are stored in a local file that is **not committed to git** to keep them private.
 
-### 4. Configure the NewsAPI key
+1. Create a file named `APIKeys.plist` inside `Aero/Aero/` with the following structure:
 
-1. Sign up at [NewsAPI.org](https://newsapi.org) and copy your API key.
-2. Open `Aero/Aero/Info.plist` in Xcode.
-3. Update the value for the key `NEWS_API_KEY` with your key.
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>GEMINI_API_KEY</key>
+    <string>YOUR_GEMINI_KEY_HERE</string>
+    <key>NEWS_API_KEY</key>
+    <string>YOUR_NEWS_API_KEY_HERE</string>
+</dict>
+</plist>
+```
+
+2. Get your **Gemini API key** from [Google AI Studio](https://aistudio.google.com) and paste it in.
+3. Get your **NewsAPI key** from [NewsAPI.org](https://newsapi.org) and paste it in.
+4. In Xcode, right-click the `Aero` folder → **Add Files to "Aero"** → select `APIKeys.plist`.
+
+> `APIKeys.plist` is gitignored and will never be committed. If you are a collaborator, request this file privately from the project owner.
 
 ### 5. Configure Google Sign-In URL scheme
 
@@ -138,8 +151,8 @@ Open `Aero/Aero.xcodeproj` in Xcode, select a simulator or connected device (iOS
 
 | Key | File | Description |
 |-----|------|-------------|
-| `GEMINI_API_KEY` | `Info.plist` | Google Gemini API key from AI Studio |
-| `NEWS_API_KEY` | `Info.plist` | NewsAPI key for live food trend search |
+| `GEMINI_API_KEY` | `APIKeys.plist` *(gitignored)* | Google Gemini API key from AI Studio |
+| `NEWS_API_KEY` | `APIKeys.plist` *(gitignored)* | NewsAPI key for live food trend search |
 | `GoogleService-Info.plist` | `Aero/Aero/` | Firebase project configuration file |
 | `REVERSED_CLIENT_ID` | `Info.plist` → `CFBundleURLSchemes` | Google OAuth redirect URL (from `GoogleService-Info.plist`) |
 
