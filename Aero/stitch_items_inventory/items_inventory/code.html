@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aero Manifesto - Items Inventory</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#00E5FF", // Vibrant Cyan
+                        secondary: "#FFD600", // Vibrant Yellow
+                        accent: "#FF2A6D", // Vibrant Red/Pink
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#18181b",
+                        "surface-light": "#F3F4F6",
+                        "surface-dark": "#27272a",
+                    },
+                    fontFamily: {
+                        display: ["Varela Round", "sans-serif"],
+                        body: ["Varela Round", "sans-serif"],
+                    },
+                    boxShadow: {
+                        'neo': '5px 5px 0px 0px rgba(0,0,0,1)',
+                        'neo-sm': '3px 3px 0px 0px rgba(0,0,0,1)',
+                        'neo-dark': '5px 5px 0px 0px rgba(255,255,255,1)',
+                        'neo-sm-dark': '3px 3px 0px 0px rgba(255,255,255,1)',
+                    },
+                    borderWidth: {
+                        '3': '3px',
+                    }
+                },
+            },
+        };
+    </script>
+<style>
+        .neo-border {
+            border: 3px solid black;
+        }
+        .dark .neo-border {
+            border-color: white;
+        }
+        .neo-shadow {
+            box-shadow: 5px 5px 0px 0px rgba(0,0,0,1);
+        }
+        .dark .neo-shadow {
+            box-shadow: 5px 5px 0px 0px rgba(255,255,255,1);
+        }
+        .neo-shadow-sm {
+            box-shadow: 3px 3px 0px 0px rgba(0,0,0,1);
+        }
+        .dark .neo-shadow-sm {
+            box-shadow: 3px 3px 0px 0px rgba(255,255,255,1);
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+        .animate-pulse-slow {
+            animation: pulse-ring 3s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        }.no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }.no-scrollbar {
+            -ms-overflow-style: none;scrollbar-width: none;}
+    </style>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-gray-100 dark:bg-black font-display antialiased transition-colors duration-300">
+<div class="max-w-md mx-auto min-h-screen bg-background-light dark:bg-background-dark relative overflow-hidden flex flex-col">
+<div class="flex justify-between items-center px-6 py-3 text-black dark:text-white text-sm font-bold z-10">
+<span>9:41</span>
+<div class="flex items-center gap-2">
+<span class="material-icons-round text-base">signal_cellular_alt</span>
+<span class="material-icons-round text-base">wifi</span>
+<span class="material-icons-round text-base">battery_full</span>
+</div>
+</div>
+<header class="px-6 py-4 flex justify-between items-center z-10">
+<div>
+<h1 class="text-4xl font-bold text-black dark:text-white uppercase leading-none tracking-tight">Items<br/>Inventory</h1>
+</div>
+<button class="w-12 h-12 rounded-full bg-secondary neo-border neo-shadow flex items-center justify-center active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all">
+<span class="material-icons-round text-black text-3xl">face</span>
+</button>
+</header>
+<section class="px-6 py-6 flex justify-center z-0 relative">
+<div class="relative w-40 h-40 flex items-center justify-center">
+<div class="absolute inset-0 rounded-full border-3 border-black dark:border-white opacity-20 scale-150"></div>
+<div class="absolute inset-0 rounded-full border-3 border-black dark:border-white opacity-40 scale-125"></div>
+<div class="relative w-full h-full bg-primary rounded-full neo-border neo-shadow flex items-center justify-center overflow-hidden z-10">
+<div class="absolute w-32 h-32 rounded-full border-3 border-black"></div>
+<div class="absolute w-20 h-20 rounded-full border-3 border-black bg-white dark:bg-black flex items-center justify-center">
+<span class="material-icons-round text-4xl animate-pulse text-black dark:text-white">psychology</span>
+</div>
+</div>
+<div class="absolute -bottom-4 bg-black dark:bg-white px-3 py-1 rounded-full neo-border rotate-3 z-20">
+<span class="text-white dark:text-black font-bold text-xs uppercase tracking-wider">AI Chef Core</span>
+</div>
+</div>
+</section>
+<section class="px-6 pb-6 overflow-x-auto no-scrollbar">
+<div class="flex gap-4">
+<button class="px-6 py-2 bg-black dark:bg-white rounded-full neo-border flex-shrink-0 active:scale-95 transition-transform">
+<span class="text-white dark:text-black font-extrabold uppercase text-sm">All Items</span>
+</button>
+<button class="px-6 py-2 bg-white dark:bg-black rounded-full neo-border flex-shrink-0 active:scale-95 transition-transform hover:bg-secondary dark:hover:bg-secondary group">
+<span class="text-black dark:text-white group-hover:text-black font-bold uppercase text-sm">Produce</span>
+</button>
+<button class="px-6 py-2 bg-white dark:bg-black rounded-full neo-border flex-shrink-0 active:scale-95 transition-transform hover:bg-secondary dark:hover:bg-secondary group">
+<span class="text-black dark:text-white group-hover:text-black font-bold uppercase text-sm">Pantry</span>
+</button>
+<button class="px-6 py-2 bg-white dark:bg-black rounded-full neo-border flex-shrink-0 active:scale-95 transition-transform hover:bg-secondary dark:hover:bg-secondary group">
+<span class="text-black dark:text-white group-hover:text-black font-bold uppercase text-sm">Frozen</span>
+</button>
+</div>
+</section>
+<main class="flex-1 px-6 pb-32 overflow-y-auto no-scrollbar">
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white dark:bg-surface-dark rounded-3xl neo-border neo-shadow p-4 flex flex-col items-center gap-3 relative overflow-hidden group">
+<div class="absolute top-3 right-3 w-3 h-3 bg-green-500 rounded-full border-2 border-black dark:border-white"></div>
+<div class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-2xl border-3 border-black dark:border-white flex items-center justify-center mt-2 group-hover:rotate-6 transition-transform">
+<span class="text-3xl">🥑</span>
+</div>
+<div class="text-center">
+<h3 class="text-black dark:text-white font-bold text-lg leading-tight">Avocados</h3>
+<p class="text-gray-500 dark:text-gray-400 text-xs font-bold mt-1">3 Units</p>
+</div>
+<div class="w-full mt-2">
+<div class="flex justify-between items-center bg-black dark:bg-white text-white dark:text-black px-3 py-1 rounded-lg border-2 border-black dark:border-white">
+<span class="text-xs font-bold uppercase">Alpha</span>
+<span class="material-icons-round text-xs">star</span>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-3xl neo-border neo-shadow p-4 flex flex-col items-center gap-3 relative overflow-hidden group">
+<div class="absolute top-3 right-3 w-3 h-3 bg-secondary rounded-full border-2 border-black dark:border-white"></div>
+<div class="w-16 h-16 bg-yellow-100 dark:bg-yellow-900 rounded-2xl border-3 border-black dark:border-white flex items-center justify-center mt-2 group-hover:-rotate-6 transition-transform">
+<span class="text-3xl">🧀</span>
+</div>
+<div class="text-center">
+<h3 class="text-black dark:text-white font-bold text-lg leading-tight">Cheddar</h3>
+<p class="text-gray-500 dark:text-gray-400 text-xs font-bold mt-1">200g</p>
+</div>
+<div class="w-full mt-2">
+<div class="flex justify-between items-center bg-white dark:bg-black text-black dark:text-white px-3 py-1 rounded-lg border-2 border-black dark:border-white">
+<span class="text-xs font-bold uppercase">Beta</span>
+<span class="material-icons-round text-xs">adjust</span>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-3xl neo-border neo-shadow p-4 flex flex-col items-center gap-3 relative overflow-hidden group">
+<div class="absolute top-3 right-3 w-3 h-3 bg-accent rounded-full border-2 border-black dark:border-white"></div>
+<div class="w-16 h-16 bg-red-100 dark:bg-red-900 rounded-2xl border-3 border-black dark:border-white flex items-center justify-center mt-2 group-hover:rotate-6 transition-transform">
+<span class="text-3xl">🥩</span>
+</div>
+<div class="text-center">
+<h3 class="text-black dark:text-white font-bold text-lg leading-tight">Ribeye</h3>
+<p class="text-gray-500 dark:text-gray-400 text-xs font-bold mt-1">2 Steaks</p>
+</div>
+<div class="w-full mt-2">
+<div class="flex justify-between items-center bg-accent text-white px-3 py-1 rounded-lg border-2 border-black dark:border-white">
+<span class="text-xs font-bold uppercase">Expiring</span>
+<span class="material-icons-round text-xs">warning</span>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-3xl neo-border neo-shadow p-4 flex flex-col items-center gap-3 relative overflow-hidden group">
+<div class="absolute top-3 right-3 w-3 h-3 bg-green-500 rounded-full border-2 border-black dark:border-white"></div>
+<div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-2xl border-3 border-black dark:border-white flex items-center justify-center mt-2 group-hover:-rotate-6 transition-transform">
+<span class="text-3xl">🥬</span>
+</div>
+<div class="text-center">
+<h3 class="text-black dark:text-white font-bold text-lg leading-tight">Kale</h3>
+<p class="text-gray-500 dark:text-gray-400 text-xs font-bold mt-1">1 Bunch</p>
+</div>
+<div class="w-full mt-2">
+<div class="flex justify-between items-center bg-black dark:bg-white text-white dark:text-black px-3 py-1 rounded-lg border-2 border-black dark:border-white">
+<span class="text-xs font-bold uppercase">Alpha</span>
+<span class="material-icons-round text-xs">star</span>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-surface-dark rounded-3xl neo-border neo-shadow p-4 flex flex-col items-center gap-3 relative overflow-hidden group">
+<div class="absolute top-3 right-3 w-3 h-3 bg-secondary rounded-full border-2 border-black dark:border-white"></div>
+<div class="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-2xl border-3 border-black dark:border-white flex items-center justify-center mt-2 group-hover:rotate-6 transition-transform">
+<span class="text-3xl">🍊</span>
+</div>
+<div class="text-center">
+<h3 class="text-black dark:text-white font-bold text-lg leading-tight">Oranges</h3>
+<p class="text-gray-500 dark:text-gray-400 text-xs font-bold mt-1">6 Units</p>
+</div>
+<div class="w-full mt-2">
+<div class="flex justify-between items-center bg-white dark:bg-black text-black dark:text-white px-3 py-1 rounded-lg border-2 border-black dark:border-white">
+<span class="text-xs font-bold uppercase">Beta</span>
+<span class="material-icons-round text-xs">adjust</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="absolute bottom-6 left-0 right-0 z-30 flex justify-center items-end pointer-events-none">
+<div class="flex items-center gap-6 pointer-events-auto">
+<button class="w-14 h-14 bg-white dark:bg-surface-dark rounded-full neo-border neo-shadow flex items-center justify-center active:translate-y-[2px] active:shadow-none transition-all group hover:bg-surface-light dark:hover:bg-gray-800">
+<span class="material-icons-round text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">home</span>
+</button>
+<button class="w-20 h-20 bg-secondary rounded-full neo-border neo-shadow flex items-center justify-center active:translate-y-[2px] active:shadow-none transition-all hover:scale-105">
+<span class="material-icons-round text-black text-4xl">qr_code_scanner</span>
+</button>
+<button class="w-14 h-14 bg-primary rounded-full neo-border neo-shadow flex items-center justify-center active:translate-y-[2px] active:shadow-none transition-all group hover:bg-cyan-300">
+<span class="material-icons-round text-black text-2xl group-hover:scale-110 transition-transform">inventory_2</span>
+</button>
+</div>
+</div>
+</div>
+
+</body></html>

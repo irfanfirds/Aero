@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aero Manifesto - Register</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0df2f2",
+                        "accent-yellow": "#FFE600",
+                        "accent-red": "#FF4D4D",
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#102222",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    boxShadow: {
+                        "neo": "5px 5px 0px 0px rgba(0,0,0,1)",
+                        "neo-hover": "2px 2px 0px 0px rgba(0,0,0,1)",
+                        "neo-dark": "5px 5px 0px 0px rgba(255,255,255,1)",
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.5rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #ffffff;}
+        .neo-input {
+            border-width: 3px;border-color: #000000;box-shadow: 5px 5px 0px 0px #000000;transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-radius: 0.75rem;}
+        .neo-input:focus {
+            box-shadow: 2px 2px 0px 0px #000000;
+            transform: translate(3px, 3px);
+            outline: none;
+            border-color: #000000;
+        }
+        .neo-btn {
+            border-width: 3px;border-color: #000000;box-shadow: 5px 5px 0px 0px #000000;transition: all 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border-radius: 0.75rem;}
+        .neo-btn:active {
+            box-shadow: 0px 0px 0px 0px #000000;
+            transform: translate(5px, 5px);
+        }
+        .dark .neo-input {
+            border-color: #f5f8f8;
+            box-shadow: 5px 5px 0px 0px #f5f8f8;
+            background-color: #102222;
+            color: #f5f8f8;
+        }
+        .dark .neo-input:focus {
+            box-shadow: 2px 2px 0px 0px #f5f8f8;
+        }
+        .dark .neo-btn {
+            border-color: #f5f8f8;
+            box-shadow: 5px 5px 0px 0px #f5f8f8;
+        }
+        .dark .neo-btn:active {
+            box-shadow: 0px 0px 0px 0px #f5f8f8;
+        }.neo-checkbox {
+            appearance: none;
+            background-color: #fff;
+            margin: 0;
+            font: inherit;
+            width: 1.5em;
+            height: 1.5em;
+            border: 3px solid currentColor;
+            border-radius: 0.25em;
+            box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+            display: grid;
+            place-content: center;
+            transition: all 0.1s;
+        }
+        .neo-checkbox::before {
+            content: "";
+            width: 0.75em;
+            height: 0.75em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em var(--primary-color);
+            background-color: #000;
+        }
+        .neo-checkbox:checked::before {
+            transform: scale(1);
+        }
+        .neo-checkbox:checked {
+            background-color: var(--primary);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col items-center justify-start overflow-x-hidden text-black selection:bg-accent-yellow selection:text-black">
+<div class="w-full max-w-md px-4 pt-8 pb-2 flex items-center justify-between z-10">
+<button class="flex items-center justify-center w-12 h-12 bg-white dark:bg-background-dark rounded-xl neo-btn hover:bg-accent-yellow dark:hover:bg-gray-800">
+<span class="material-symbols-outlined text-black dark:text-white" style="font-size: 28px; font-weight: 700;">arrow_back</span>
+</button>
+<div class="font-black text-xl tracking-wide text-black dark:text-white uppercase">Register</div>
+<div class="w-12"></div>
+</div>
+<div class="w-full max-w-md flex flex-col px-6 pt-6 pb-12 gap-8">
+<div class="flex flex-col gap-3">
+<h1 class="text-5xl font-bold leading-[0.9] tracking-tight text-black dark:text-white">
+                Start Tracking. <br/>
+<span class="text-primary bg-black px-2 py-0 inline-block -rotate-1 transform mt-1 border-2 border-black rounded-lg" style="text-shadow: none;">Live Smarter.</span>
+</h1>
+<p class="text-lg font-medium text-black dark:text-gray-300 border-l-[6px] border-black pl-4 py-1 mt-4 ml-1">
+                Stop Wasting. Start Tracking. 
+                <br/><span class="bg-accent-yellow px-1">Proactive intervention</span> starts now.
+            </p>
+</div>
+<form class="flex flex-col gap-6">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-black uppercase tracking-wider text-black dark:text-white ml-1">Full Name</label>
+<input class="neo-input w-full h-16 px-5 bg-white rounded-xl text-xl font-bold placeholder-gray-400 focus:ring-0 text-black" placeholder="e.g. Alex Sterling" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-black uppercase tracking-wider text-black dark:text-white ml-1">Email Address</label>
+<input class="neo-input w-full h-16 px-5 bg-white rounded-xl text-xl font-bold placeholder-gray-400 focus:ring-0 text-black" placeholder="user@example.com" type="email"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-black uppercase tracking-wider text-black dark:text-white flex justify-between items-end ml-1">
+<span>Password</span>
+<span class="text-xs font-bold text-black bg-accent-yellow px-1 border border-black rounded-sm normal-case">Min. 8 chars</span>
+</label>
+<div class="relative">
+<input class="neo-input w-full h-16 px-5 bg-white rounded-xl text-xl font-bold placeholder-gray-400 focus:ring-0 pr-14 text-black" placeholder="••••••••" type="password"/>
+<button class="absolute right-5 top-1/2 -translate-y-1/2 text-black dark:text-white hover:text-accent-red transition-colors" type="button">
+<span class="material-symbols-outlined" style="font-weight: 600;">visibility</span>
+</button>
+</div>
+</div>
+<label class="flex items-start gap-4 mt-2 cursor-pointer group">
+<div class="relative flex items-center pt-1">
+<input class="peer h-6 w-6 appearance-none border-[3px] border-black bg-white checked:bg-primary transition-all rounded-md shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] checked:translate-x-[2px] checked:translate-y-[2px] checked:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]" type="checkbox"/>
+<span class="material-symbols-outlined absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-black opacity-0 peer-checked:opacity-100 pointer-events-none text-xl font-black mt-0.5">check</span>
+</div>
+<span class="text-sm font-bold text-black dark:text-gray-300 leading-tight pt-1.5">
+                    I agree to the <a class="underline decoration-[3px] decoration-accent-red underline-offset-2 font-black text-black dark:text-white hover:bg-accent-red hover:text-white transition-colors px-0.5" href="#">Zero-Waste Policy</a> and Terms of Service.
+                </span>
+</label>
+<button class="neo-btn mt-6 w-full h-16 bg-primary rounded-xl flex items-center justify-center gap-2 group hover:bg-accent-yellow" type="button">
+<span class="text-black text-xl font-black uppercase tracking-wider">Commit to Change</span>
+<span class="material-symbols-outlined text-black font-black group-hover:translate-x-1 transition-transform stroke-2">arrow_forward</span>
+</button>
+</form>
+<div class="flex items-center gap-4 py-4">
+<div class="h-[3px] flex-1 bg-black dark:bg-white rounded-full"></div>
+<span class="text-xs font-black uppercase text-black bg-white border-2 border-black px-2 py-1 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rotate-2">or with</span>
+<div class="h-[3px] flex-1 bg-black dark:bg-white rounded-full"></div>
+</div>
+<div class="grid grid-cols-2 gap-5">
+<button class="neo-btn h-14 flex items-center justify-center gap-2 bg-white dark:bg-background-dark rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 group">
+<span class="material-symbols-outlined text-black dark:text-white group-hover:scale-110 transition-transform">ios</span>
+<span class="font-black text-base text-black dark:text-white uppercase tracking-wide">Apple</span>
+</button>
+<button class="neo-btn h-14 flex items-center justify-center gap-2 bg-white dark:bg-background-dark rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 group">
+<span class="material-symbols-outlined text-black dark:text-white group-hover:scale-110 transition-transform">mail</span>
+<span class="font-black text-base text-black dark:text-white uppercase tracking-wide">Google</span>
+</button>
+</div>
+<div class="mt-6 text-center">
+<p class="text-base font-bold text-black dark:text-gray-300">
+                Already tracking? 
+                <a class="inline-block ml-1 font-black text-black dark:text-white bg-accent-yellow border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] px-2 py-0.5 hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none transition-all rounded-md transform -rotate-1" href="#">Log in</a>
+</p>
+</div>
+</div>
+<div class="fixed inset-0 pointer-events-none z-[-1] opacity-5" style="background-image: radial-gradient(#000 1px, transparent 1px); background-size: 20px 20px;"></div>
+</body></html>

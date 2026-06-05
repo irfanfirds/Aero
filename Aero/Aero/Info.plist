@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>REVERSED_CLIENT_ID</key>
+			<string>com.googleusercontent.apps.675818555481-spbo9d7122a7v062ds57dqr8jtjfb0an</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Google sign in</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.675818555481-spbo9d7122a7v062ds57dqr8jtjfb0an</string>
+			</array>
+			<key>New Item</key>
+			<string>com.googleusercontent.apps.397993303108-aabqgtt740g715vnb7cj8sb23l1q99gu</string>
+		</dict>
+		<dict>
+			<key>CFBundleIdentifier</key>
+			<string></string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+		</dict>
+		<dict/>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string></string>
+		</dict>
+	</array>
+	<key>GEMINI_API_KEY</key>
+	<string>AIzaSyBbbhTALoWRyVrrqnPiOjvC60LWsp1xuRM</string>
+	<key>NEWS_API_KEY</key>
+	<string>417b9afba2da44be86c17ae5acf218ec</string>
+</dict>
+</plist>

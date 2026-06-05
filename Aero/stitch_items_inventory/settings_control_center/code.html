@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aero Manifesto - Settings</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#06b6d4", // Cyan-500
+                        secondary: "#facc15", // Yellow-400
+                        accent: "#ef4444", // Red-500
+                        "background-light": "#ffffff",
+                        "background-dark": "#0f172a", // Slate-900
+                        "surface-light": "#f3f4f6",
+                        "surface-dark": "#1e293b",
+                    },
+                    fontFamily: {
+                        display: ["Outfit", "sans-serif"], 
+                        body: ["Space Grotesk", "sans-serif"], 
+                    },
+                    borderRadius: {
+                        DEFAULT: "1rem",
+                        'xl': "1.25rem",
+                        '2xl': "1.5rem",
+                        '3xl': "2rem",
+                        'full': "9999px",
+                    },
+                    boxShadow: {
+                        'neo': '5px 5px 0px 0px rgba(0,0,0,1)',
+                        'neo-sm': '3px 3px 0px 0px rgba(0,0,0,1)',
+                        'neo-lg': '8px 8px 0px 0px rgba(0,0,0,1)',
+                        'neo-float': '6px 6px 0px 0px rgba(0,0,0,1)',
+                        'neo-dark': '5px 5px 0px 0px rgba(255,255,255,1)',
+                        'neo-sm-dark': '3px 3px 0px 0px rgba(255,255,255,1)',
+                    },
+                    borderWidth: {
+                        '3': '3px',
+                    }
+                },
+            },
+        };
+    </script>
+<style>
+        body {
+            -webkit-font-smoothing: antialiased;
+        }
+        .neo-border {
+            border: 3px solid black;
+        }
+        .dark .neo-border {
+            border: 3px solid white;
+        }
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #000;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #000;
+        }</style>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-black dark:text-white font-body min-h-screen transition-colors duration-300">
+<div class="max-w-md mx-auto min-h-screen relative flex flex-col pb-36">
+<header class="p-6 flex justify-between items-center z-10 pt-8">
+<button class="w-12 h-12 flex items-center justify-center rounded-full bg-white dark:bg-gray-800 neo-border shadow-neo-sm dark:shadow-neo-sm-dark active:translate-y-[3px] active:translate-x-[3px] active:shadow-none transition-all hover:bg-surface-light">
+<span class="material-symbols-outlined text-3xl font-bold">arrow_back</span>
+</button>
+<h1 class="text-3xl font-display font-black tracking-tight uppercase">Settings</h1>
+<div class="w-12"></div>
+</header>
+<section class="px-6 py-2 flex flex-col items-center text-center">
+<div class="relative">
+<div class="w-32 h-32 bg-secondary rounded-full flex items-center justify-center neo-border shadow-neo dark:shadow-neo-dark mb-4 overflow-hidden relative z-0">
+<span class="text-5xl font-display font-black text-black tracking-tighter">AM</span>
+</div>
+<div class="absolute bottom-4 right-0 bg-primary w-10 h-10 rounded-full neo-border flex items-center justify-center text-white shadow-neo-sm dark:shadow-neo-sm-dark z-10 hover:scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-lg font-bold">edit</span>
+</div>
+</div>
+<h2 class="text-3xl font-display font-black mb-1 tracking-tight">Alex Morgan</h2>
+<p class="text-gray-500 dark:text-gray-400 font-bold font-body text-lg">@aero_manifesto</p>
+</section>
+<main class="px-6 py-4 space-y-6">
+<div class="flex items-center space-x-3 mb-2">
+<div class="bg-primary w-2 h-8 neo-border"></div>
+<h3 class="text-2xl font-display font-black uppercase tracking-wide">Preferences</h3>
+</div>
+<div class="bg-white dark:bg-gray-800 rounded-3xl neo-border shadow-neo dark:shadow-neo-dark group active:shadow-none active:translate-x-[5px] active:translate-y-[5px] transition-all cursor-pointer overflow-hidden">
+<div class="flex items-center justify-between p-5 bg-cyan-50 dark:bg-gray-700/50 border-b-0 border-transparent transition-colors hover:bg-cyan-100 dark:hover:bg-gray-700">
+<div class="flex items-center space-x-5">
+<div class="bg-primary text-white w-12 h-12 flex items-center justify-center rounded-xl neo-border shadow-neo-sm dark:shadow-neo-sm-dark">
+<span class="material-symbols-outlined text-2xl">badge</span>
+</div>
+<div>
+<p class="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-300 mb-1">Display Name</p>
+<p class="text-xl font-display font-bold leading-none">Alex Morgan</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-3xl font-bold">chevron_right</span>
+</div>
+</div>
+<div class="bg-white dark:bg-gray-800 rounded-3xl neo-border shadow-neo dark:shadow-neo-dark group active:shadow-none active:translate-x-[5px] active:translate-y-[5px] transition-all cursor-pointer overflow-hidden">
+<div class="flex items-center justify-between p-5 bg-yellow-50 dark:bg-gray-700/50 border-b-0 border-transparent transition-colors hover:bg-yellow-100 dark:hover:bg-gray-700">
+<div class="flex items-center space-x-5">
+<div class="bg-secondary text-black w-12 h-12 flex items-center justify-center rounded-xl neo-border shadow-neo-sm dark:shadow-neo-sm-dark">
+<span class="material-symbols-outlined text-2xl">restaurant_menu</span>
+</div>
+<div>
+<p class="text-xs font-black uppercase tracking-widest text-gray-500 dark:text-gray-300 mb-1">Dietary Rules</p>
+<p class="text-xl font-display font-bold leading-none">Vegetarian, No Nuts</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-3xl font-bold">chevron_right</span>
+</div>
+</div>
+<div class="mt-8 space-y-6">
+<div class="flex items-center justify-between bg-white dark:bg-gray-800 p-5 rounded-3xl neo-border shadow-neo-sm dark:shadow-neo-sm-dark">
+<div class="flex items-center space-x-4">
+<div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center neo-border">
+<span class="material-symbols-outlined text-green-600 text-xl font-bold">spa</span>
+</div>
+<span class="font-display font-bold text-xl">Vegan Mode</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-16 h-9 bg-gray-200 dark:bg-gray-600 peer-focus:outline-none rounded-full neo-border peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[5px] after:left-[5px] after:bg-white after:border-2 after:border-black after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-black dark:peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between bg-white dark:bg-gray-800 p-5 rounded-3xl neo-border shadow-neo-sm dark:shadow-neo-sm-dark">
+<div class="flex items-center space-x-4">
+<div class="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center neo-border">
+<span class="material-symbols-outlined text-primary text-xl font-bold">notifications_active</span>
+</div>
+<span class="font-display font-bold text-xl">Notifications</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-16 h-9 bg-gray-200 dark:bg-gray-600 peer-focus:outline-none rounded-full neo-border peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[5px] after:left-[5px] after:bg-white after:border-2 after:border-black after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-black dark:peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</main>
+<div class="mt-auto px-6 pt-6 pb-2">
+<button class="w-full bg-accent hover:bg-red-600 text-white font-display font-black tracking-wider text-xl py-5 rounded-3xl neo-border shadow-neo-lg dark:shadow-neo-dark active:shadow-none active:translate-x-2 active:translate-y-2 transition-all flex justify-center items-center gap-3 uppercase">
+<span class="material-symbols-outlined font-bold">logout</span>
+                Log Out
+            </button>
+</div>
+<nav class="fixed bottom-6 left-0 right-0 z-50 flex justify-center pointer-events-none">
+<div class="pointer-events-auto flex items-center gap-4">
+<button class="w-14 h-14 rounded-full bg-secondary flex items-center justify-center neo-border shadow-neo hover:shadow-neo-sm active:translate-y-1 active:translate-x-1 active:shadow-none transition-all">
+<span class="material-symbols-outlined text-3xl text-black font-bold">home</span>
+</button>
+<button class="w-14 h-14 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center neo-border shadow-neo hover:shadow-neo-sm active:translate-y-1 active:translate-x-1 active:shadow-none transition-all group hover:bg-gray-50">
+<span class="material-symbols-outlined text-3xl text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors font-bold">bookmark</span>
+</button>
+<button class="w-14 h-14 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center neo-border shadow-neo hover:shadow-neo-sm active:translate-y-1 active:translate-x-1 active:shadow-none transition-all group hover:bg-gray-50">
+<span class="material-symbols-outlined text-3xl text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors font-bold">timer</span>
+</button>
+<button class="w-14 h-14 rounded-full bg-white dark:bg-gray-700 flex items-center justify-center neo-border shadow-neo hover:shadow-neo-sm active:translate-y-1 active:translate-x-1 active:shadow-none transition-all group hover:bg-gray-50">
+<span class="material-symbols-outlined text-3xl text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors font-bold">bar_chart</span>
+</button>
+</div>
+</nav>
+</div>
+
+</body></html>

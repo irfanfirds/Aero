@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aero Manifesto - Home Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Varela+Round&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#D4FF38", // The bright lime green/yellow from reference
+                        secondary: "#D8B4FE", // The soft purple from reference
+                        accent: "#FF4D4D", // Red for waste alert
+                        cyan: "#4DFAFF", // Neo-brutalist cyan
+                        "background-light": "#FFFFFF",
+                        "background-dark": "#121212",
+                        "surface-dark": "#1E1E1E",
+                    },
+                    fontFamily: {
+                        display: ["Varela Round", "sans-serif"],
+                        sans: ["Varela Round", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "1.5rem", 
+                        'xl': "1.5rem",
+                        '2xl': "2rem",
+                    },
+                    borderWidth: {
+                        '3': '3px',
+                    },
+                    boxShadow: {
+                        'hard': '5px 5px 0px 0px rgba(0,0,0,1)', // Hard shadow for neo-brutalism
+                        'hard-dark': '5px 5px 0px 0px rgba(255,255,255,0.2)', // Adjusted for dark mode
+                    }
+                },
+            },
+        };
+    </script>
+<style>.neo-border {
+            border: 3px solid black;
+        }
+        .dark .neo-border {
+            border: 3px solid white;
+        }
+        .neo-shadow {
+            box-shadow: 5px 5px 0px 0px rgba(0,0,0,1);
+        }
+        .dark .neo-shadow {
+            box-shadow: 5px 5px 0px 0px rgba(255,255,255,0.9);
+        }
+        .neo-shadow-sm {
+            box-shadow: 3px 3px 0px 0px rgba(0,0,0,1);
+        }
+        .dark .neo-shadow-sm {
+            box-shadow: 3px 3px 0px 0px rgba(255,255,255,0.9);
+        }.no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-black dark:text-white antialiased transition-colors duration-200">
+<div class="max-w-md mx-auto min-h-screen relative overflow-hidden pb-32">
+<div class="flex justify-between items-center px-6 pt-6 pb-4">
+<span class="text-sm font-bold">9:28</span>
+<div class="flex gap-1">
+<span class="material-icons-round text-sm">signal_cellular_alt</span>
+<span class="material-icons-round text-sm">wifi</span>
+<span class="material-icons-round text-sm">battery_full</span>
+</div>
+</div>
+<header class="px-6 mb-8 flex justify-between items-start">
+<div>
+<h1 class="text-4xl font-bold leading-tight mb-1">
+                    Hi, Alex
+                </h1>
+<p class="text-lg font-medium text-gray-600 dark:text-gray-300">
+                    Reduce waste, feel proud.
+                </p>
+</div>
+<button class="neo-border w-12 h-12 rounded-full flex items-center justify-center hover:bg-gray-100 dark:hover:bg-surface-dark transition-transform active:translate-y-1 active:translate-x-1 active:shadow-none bg-white dark:bg-black text-black dark:text-white neo-shadow-sm">
+<span class="material-icons-round">grid_view</span>
+</button>
+</header>
+<div class="px-6 mb-8">
+<div class="relative group">
+<input class="w-full neo-border rounded-xl py-4 pl-12 pr-4 bg-white dark:bg-black placeholder-gray-500 focus:outline-none focus:ring-0 neo-shadow transition-all font-bold" placeholder="Search your pantry..." type="text"/>
+<span class="material-icons-round absolute left-4 top-1/2 transform -translate-y-1/2 text-2xl">search</span>
+</div>
+</div>
+<section class="px-6 mb-8">
+<div class="neo-border bg-accent rounded-2xl p-6 neo-shadow relative overflow-hidden">
+<div class="absolute -right-4 -top-4 w-20 h-20 bg-white rounded-full opacity-20"></div>
+<div class="flex justify-between items-start mb-4">
+<div class="bg-white neo-border px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider neo-shadow-sm text-black">
+                        Alert
+                    </div>
+<span class="material-icons-round text-white text-3xl">warning</span>
+</div>
+<h2 class="text-2xl font-bold text-white mb-1">3 Items Expiring</h2>
+<p class="text-white font-medium mb-4 opacity-90">Act now or feel the guilt.</p>
+<div class="flex -space-x-3 mb-4">
+<img alt="Tomato" class="w-10 h-10 rounded-full border-2 border-black object-cover bg-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZ4RSHWlQUp04qgOTfR2qx8kxojLrmWFIzd57jEd8TsRBnYW3IUQfrLw7LN6UqLDM2iSmyMw2yCHXz0sbR_vM5gdCUsv308yKb0ad3by4Rrk3b56G5jl8EAjI61rZjy1QiU84KlQ45oubcGxx-uhyqinhIzE6XwGUfzibWfwThcle8N-MhrjL9UVad31GBHTUTI_TTHv_zydvi7BnkrIVzlcF19kjnJ10OEscwb8aPksooXlPf-HNkVrwsBziRP5RXd5jGArTSN5g"/>
+<img alt="Greens" class="w-10 h-10 rounded-full border-2 border-black object-cover bg-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAug8KLN1FYiSQJegQjBi5pitniRq3OOMseZKQOX2hb-Xgrf6qDjeMEL4tvk-CdK-A0ZYwfXvwMLfaZUPjYPp_JWTybqO-alMf9_qK1QRDwitTawgorQA7hBbOkbaNvr4GQNd7yrHHgD1__NUcNnMVZlTIP96JtirqDt5PJrsis-yTwvGP7OtAjTQnIhsgj11WgIJ0yHnHpGtJ63IBbXS5OF98NclA6upe5drIOYeLGGf-z29wL_zpZ0BUN5YM48t9t7IaonvvgjJU"/>
+<img alt="Cheese" class="w-10 h-10 rounded-full border-2 border-black object-cover bg-white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkqSUQbL9RTtLiUT3UccymzQ2y-yOj0d8YtX8mG8gxUDwk-2llCnLmk30YzGG0P0dvWsdk6imEIQdUr9WU1lIH13qck4EJV_Mnv7a7NyyTgoXVspmGw7p1g2M1yK2jCPEl0dz-vUYm3NRdwDv2h35iDiHNm8oKiR1k0OcwrpUjrB66w_c2n_tTnv05Cl_GuoisnhsjlC7SzaQpBUv4quQYbjCu4G1ZYDzBqV7eBQD0llZrRFVEU3sTMLdBFFqKM_guIRUKtUp-EPQ"/>
+</div>
+<button class="w-full bg-white text-black neo-border py-3 rounded-xl font-bold neo-shadow-sm active:translate-y-1 active:translate-x-1 active:shadow-none transition-all flex items-center justify-center gap-2">
+<span>View Fridge</span>
+<span class="material-icons-round text-sm">arrow_forward</span>
+</button>
+</div>
+</section>
+<section class="px-6 mb-8">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xl font-bold">Impact</h3>
+<span class="text-sm font-bold underline cursor-pointer">View Report</span>
+</div>
+<div class="bg-secondary dark:bg-purple-900 neo-border rounded-2xl p-6 neo-shadow flex flex-col justify-between h-48 relative overflow-hidden">
+<div class="absolute bottom-0 left-0 w-full h-24 flex items-end justify-around px-4 opacity-30 pointer-events-none">
+<div class="w-4 h-12 bg-black dark:bg-white rounded-t-md"></div>
+<div class="w-4 h-16 bg-black dark:bg-white rounded-t-md"></div>
+<div class="w-4 h-10 bg-black dark:bg-white rounded-t-md"></div>
+<div class="w-4 h-20 bg-black dark:bg-white rounded-t-md"></div>
+<div class="w-4 h-14 bg-black dark:bg-white rounded-t-md"></div>
+</div>
+<div class="flex justify-between items-start z-10">
+<div>
+<span class="text-5xl font-bold block">86%</span>
+<span class="text-sm font-bold uppercase tracking-wide">Food Saved</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-black dark:bg-white text-white dark:text-black flex items-center justify-center">
+<span class="material-icons-round">arrow_downward</span>
+</div>
+</div>
+<div class="z-10 mt-auto">
+<p class="font-bold text-lg">2.3kg <span class="font-normal text-sm">Saved this week</span></p>
+</div>
+</div>
+</section>
+<section class="px-6 mb-8">
+<h3 class="text-xl font-bold mb-4">Quick Actions</h3>
+<div class="grid grid-cols-2 gap-4">
+<button class="bg-primary neo-border rounded-2xl p-5 neo-shadow active:translate-y-1 active:translate-x-1 active:shadow-none transition-all flex flex-col items-center justify-center h-32 text-black">
+<div class="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center mb-3">
+<span class="material-icons-round text-2xl">add</span>
+</div>
+<span class="font-bold text-lg">Add Item</span>
+</button>
+<button class="bg-cyan neo-border rounded-2xl p-5 neo-shadow active:translate-y-1 active:translate-x-1 active:shadow-none transition-all flex flex-col items-center justify-center h-32 text-black">
+<div class="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center mb-3">
+<span class="material-icons-round text-2xl">qr_code_scanner</span>
+</div>
+<span class="font-bold text-lg">Scan</span>
+</button>
+</div>
+</section>
+<nav class="fixed bottom-6 left-0 right-0 flex justify-center items-end px-6 z-50 pointer-events-none">
+<div class="flex items-center gap-4 pointer-events-auto">
+<button class="w-16 h-16 rounded-full bg-primary neo-border flex items-center justify-center neo-shadow transition-all active:translate-y-1 active:translate-x-1 active:shadow-none hover:-translate-y-2 group">
+<span class="material-icons-round text-black text-3xl group-hover:scale-110 transition-transform">home</span>
+</button>
+<button class="w-14 h-14 rounded-full bg-white dark:bg-surface-dark neo-border flex items-center justify-center neo-shadow transition-all active:translate-y-1 active:translate-x-1 active:shadow-none hover:-translate-y-2 group">
+<span class="material-icons-round text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">bookmark_border</span>
+</button>
+<button class="w-14 h-14 rounded-full bg-white dark:bg-surface-dark neo-border flex items-center justify-center neo-shadow transition-all active:translate-y-1 active:translate-x-1 active:shadow-none hover:-translate-y-2 group">
+<span class="material-icons-round text-black dark:text-white text-2xl group-hover:scale-110 transition-transform">timer</span>
+</button>
+<button class="w-14 h-14 rounded-full bg-secondary neo-border flex items-center justify-center neo-shadow transition-all active:translate-y-1 active:translate-x-1 active:shadow-none hover:-translate-y-2 group">
+<span class="material-icons-round text-black text-2xl group-hover:scale-110 transition-transform">bar_chart</span>
+</button>
+</div>
+</nav>
+<div class="fixed top-20 right-0 w-32 h-64 bg-secondary rounded-l-full opacity-20 -z-10 pointer-events-none blur-3xl"></div>
+<div class="fixed bottom-20 left-0 w-40 h-40 bg-primary rounded-r-full opacity-20 -z-10 pointer-events-none blur-3xl"></div>
+</div>
+</body></html>
