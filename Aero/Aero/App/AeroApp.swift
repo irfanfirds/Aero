@@ -1,6 +1,5 @@
 import SwiftUI
 import FirebaseCore
-import FirebaseAppCheck
 import FirebaseAuth
 
 @main
@@ -14,13 +13,6 @@ struct AeroApp: App {
     @StateObject private var recipeVM = RecipeViewModel()
 
     init() {
-        // App Check provider MUST be set before FirebaseApp.configure().
-        // Using DebugProvider skips the DeviceCheck network call that was
-        // blocking all auth requests before they even started.
-        #if DEBUG
-        AppCheck.setAppCheckProviderFactory(AppCheckDebugProviderFactory())
-        #endif
-
         if FirebaseApp.app() == nil {
             FirebaseApp.configure()
         }
