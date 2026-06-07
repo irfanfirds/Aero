@@ -1,5 +1,5 @@
 import Foundation
-import FirebaseAuth
+@preconcurrency import FirebaseAuth
 import FirebaseCore
 import GoogleSignIn
 import AuthenticationServices
@@ -71,14 +71,14 @@ final class AuthManager: ObservableObject {
     // MARK: - Timeout Helper
     // Uses detached tasks to avoid MainActor deadlock with Firebase's async bridging.
     // Both the Firebase call and the timer run off the main actor completely.
-    private func withTimeout<T: Sendable>(
+    private func withTimeout<T>(
         seconds: TimeInterval = 30,
-        operation: @escaping @Sendable () async throws -> T
+        operation: @escaping () async throws -> T
     ) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
             let gate = TimeoutGate<T>()
 
-            Task.detached(priority: .userInitiated) {
+            Task {
                 do {
                     let result = try await operation()
                     gate.resume(continuation, with: .success(result))
@@ -87,7 +87,7 @@ final class AuthManager: ObservableObject {
                 }
             }
 
-            Task.detached {
+            Task {
                 try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
                 gate.resume(continuation, with: .failure(URLError(.timedOut)))
             }
