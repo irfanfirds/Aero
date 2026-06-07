@@ -1,6 +1,5 @@
 import UIKit
 import FirebaseCore
-import FirebaseAppCheck
 import GoogleSignIn
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -8,10 +7,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
     ) -> Bool {
-
-        #if DEBUG
-        AppCheck.setAppCheckProviderFactory(AppCheckDebugProviderFactory())
-        #endif
 
         if FirebaseApp.app() == nil {
             FirebaseApp.configure()
