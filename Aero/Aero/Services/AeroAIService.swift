@@ -1,6 +1,6 @@
 import Foundation
-import FirebaseCore // Keep this for FirebaseApp
-import GoogleGenerativeAI // This is the ONLY AI import you need now
+import FirebaseCore
+import GoogleGenerativeAI
 
 // MARK: - Error Types
 
@@ -38,9 +38,36 @@ struct SustainabilityResponse: Codable {
 
 class AeroAIService {
     static let shared = AeroAIService()
-    
-    // MARK: - Private Helper
-    
+
+    // MARK: - Model Names
+    private static let primaryModelName  = "gemini-2.5-flash"
+    private static let fallbackModelName = "gemini-2.5-flash-lite"
+
+    // MARK: - Primary Model Instances
+    private var _chatModel: GenerativeModel?
+    private var _insightModel: GenerativeModel?
+    private var _recipeModel: GenerativeModel?
+
+    // MARK: - Fallback Model Instances (gemini-2.5-flash-lite — separate infra)
+    private var _chatModelFallback: GenerativeModel?
+    private var _insightModelFallback: GenerativeModel?
+    private var _recipeModelFallback: GenerativeModel?
+
+    // MARK: - Quota Tracking
+    private let quotaLimit = 500
+    private let usageKey   = "AERO_DAILY_USAGE"
+    private let dateKey    = "AERO_LAST_REQUEST_DATE"
+
+    // MARK: - Response Caches (in-memory, cleared on app restart)
+    private var insightCache: [String: SustainabilityResponse] = [:]
+    private var recipeCache:  [String: [SharedRecipe]] = [:]
+
+    private var isFirebaseConfigured: Bool { FirebaseApp.app() != nil }
+
+    private init() {}
+
+    // MARK: - API Key
+
     private func geminiAPIKey() -> String {
         guard let url = Bundle.main.url(forResource: "APIKeys", withExtension: "plist"),
               let dict = NSDictionary(contentsOf: url),
@@ -52,73 +79,82 @@ class AeroAIService {
         return key
     }
 
-    // MARK: - Private Model Instances
-    // Lazy so Firebase is only accessed after FirebaseApp.configure() runs
-    // This prevents the SwiftUI Preview assertion crash
-    private var _chatModel: GenerativeModel?
-    private var _insightModel: GenerativeModel?
-    private var _recipeModel: GenerativeModel?
-
-    // MARK: - Quota Tracking
-    private let quotaLimit = 500
-    private let usageKey   = "AERO_DAILY_USAGE"
-    private let dateKey    = "AERO_LAST_REQUEST_DATE"
-
-    // MARK: - Firebase Configured Check
-    // Guards against calling FirebaseAI before FirebaseApp.configure()
-    private var isFirebaseConfigured: Bool {
-        return FirebaseApp.app() != nil
-    }
-
-    // MARK: - Init
-    // NOTE: Models are NOT initialized here to prevent Preview crashes
-    // They are created lazily on first use via getModel()
-    private init() {}
-
-    // MARK: - Standardized Accessors
-    // Ensure you have: import GoogleGenerativeAI at the top of your file
+    // MARK: - Model Accessors
 
     private func chatModel() -> GenerativeModel {
-        if let model = _chatModel { return model }
-
-        let model = GenerativeModel(
-            name: "gemini-2.5-flash",
+        if let m = _chatModel { return m }
+        let m = GenerativeModel(
+            name: Self.primaryModelName,
             apiKey: geminiAPIKey(),
             generationConfig: GenerationConfig(temperature: 0.7, maxOutputTokens: 2000),
             systemInstruction: ModelContent(role: "system", parts: [.text(Self.chatManifesto)])
         )
-        _chatModel = model
-        return model
+        _chatModel = m
+        return m
+    }
+
+    private func chatFallbackModel() -> GenerativeModel {
+        if let m = _chatModelFallback { return m }
+        let m = GenerativeModel(
+            name: Self.fallbackModelName,
+            apiKey: geminiAPIKey(),
+            generationConfig: GenerationConfig(temperature: 0.7, maxOutputTokens: 2000),
+            systemInstruction: ModelContent(role: "system", parts: [.text(Self.chatManifesto)])
+        )
+        _chatModelFallback = m
+        return m
     }
 
     private func insightModel() -> GenerativeModel {
-        if let model = _insightModel { return model }
-        
-        let model = GenerativeModel(
-            name: "gemini-2.5-flash",
+        if let m = _insightModel { return m }
+        let m = GenerativeModel(
+            name: Self.primaryModelName,
             apiKey: geminiAPIKey(),
             generationConfig: GenerationConfig(temperature: 0.3, maxOutputTokens: 512, responseMIMEType: "application/json"),
             systemInstruction: ModelContent(role: "system", parts: [.text(Self.systemManifesto)])
         )
-        _insightModel = model
-        return model
+        _insightModel = m
+        return m
+    }
+
+    private func insightFallbackModel() -> GenerativeModel {
+        if let m = _insightModelFallback { return m }
+        let m = GenerativeModel(
+            name: Self.fallbackModelName,
+            apiKey: geminiAPIKey(),
+            generationConfig: GenerationConfig(temperature: 0.3, maxOutputTokens: 512, responseMIMEType: "application/json"),
+            systemInstruction: ModelContent(role: "system", parts: [.text(Self.systemManifesto)])
+        )
+        _insightModelFallback = m
+        return m
     }
 
     private func recipeModel() -> GenerativeModel {
-        if let model = _recipeModel { return model }
-        
-        let model = GenerativeModel(
-            name: "gemini-2.5-flash",
+        if let m = _recipeModel { return m }
+        let m = GenerativeModel(
+            name: Self.primaryModelName,
             apiKey: geminiAPIKey(),
             generationConfig: GenerationConfig(temperature: 0.5, maxOutputTokens: 2000, responseMIMEType: "application/json"),
             systemInstruction: ModelContent(role: "system", parts: [.text(Self.systemManifesto)])
         )
-        _recipeModel = model
-        return model
+        _recipeModel = m
+        return m
     }
-    
-    
+
+    private func recipeFallbackModel() -> GenerativeModel {
+        if let m = _recipeModelFallback { return m }
+        let m = GenerativeModel(
+            name: Self.fallbackModelName,
+            apiKey: geminiAPIKey(),
+            generationConfig: GenerationConfig(temperature: 0.5, maxOutputTokens: 2000, responseMIMEType: "application/json"),
+            systemInstruction: ModelContent(role: "system", parts: [.text(Self.systemManifesto)])
+        )
+        _recipeModelFallback = m
+        return m
+    }
+
     // MARK: - System Prompts
+
     private static let chatManifesto = """
     You are the Aero Intelligence Cluster — a kitchen assistant AI with a clinical, brutalist tone.
     Help users manage their food inventory, suggest recipes, and reduce food waste.
@@ -147,12 +183,15 @@ class AeroAIService {
         checkAndResetDailyQuota()
         try checkQuota()
 
-        let model  = chatModel()
         let context = inventory.map { $0.name }.joined(separator: ", ")
         let prompt  = "Current inventory: [\(context)]. User request: \(userMessage)"
 
         do {
-            let result = try await withRetry { try await model.generateContent(prompt) }
+            let result = try await withRetryAndFallback(
+                primary: chatModel(),
+                fallback: chatFallbackModel(),
+                prompt: prompt
+            )
             incrementUsage()
             return result.text ?? "CORE_SILENT"
         } catch {
@@ -166,7 +205,10 @@ class AeroAIService {
         checkAndResetDailyQuota()
         try checkQuota()
 
-        let model  = insightModel()
+        // Return cached result if inventory hasn't changed
+        let cacheKey = inventory.sorted().joined(separator: ",")
+        if let cached = insightCache[cacheKey] { return cached }
+
         let prompt = """
         Analyze the sustainability impact of this food inventory: [\(inventory.joined(separator: ", "))].
         Return a JSON object with exactly these keys:
@@ -178,7 +220,11 @@ class AeroAIService {
         """
 
         do {
-            let result = try await withRetry { try await model.generateContent(prompt) }
+            let result = try await withRetryAndFallback(
+                primary: insightModel(),
+                fallback: insightFallbackModel(),
+                prompt: prompt
+            )
 
             guard let responseText = result.text, !responseText.isEmpty else {
                 throw AeroError.emptyResponse
@@ -190,8 +236,10 @@ class AeroAIService {
                 throw AeroError.invalidJSON
             }
 
+            let response = try JSONDecoder().decode(SustainabilityResponse.self, from: data)
+            insightCache[cacheKey] = response
             incrementUsage()
-            return try JSONDecoder().decode(SustainabilityResponse.self, from: data)
+            return response
 
         } catch let error as AeroError {
             throw error
@@ -209,7 +257,10 @@ class AeroAIService {
         checkAndResetDailyQuota()
         try checkQuota()
 
-        let model   = recipeModel()
+        // Return cached result if ingredient list hasn't changed
+        let cacheKey = items.sorted().joined(separator: ",")
+        if let cached = recipeCache[cacheKey] { return cached }
+
         let primary = items.first ?? "available ingredients"
         let prompt  = """
         Generate exactly 2 creative recipes using these ingredients: [\(items.joined(separator: ", "))].
@@ -228,7 +279,11 @@ class AeroAIService {
         """
 
         do {
-            let result = try await withRetry { try await model.generateContent(prompt) }
+            let result = try await withRetryAndFallback(
+                primary: recipeModel(),
+                fallback: recipeFallbackModel(),
+                prompt: prompt
+            )
 
             guard let responseText = result.text, !responseText.isEmpty else {
                 throw AeroError.emptyResponse
@@ -240,8 +295,10 @@ class AeroAIService {
                 throw AeroError.invalidJSON
             }
 
+            let recipes = try JSONDecoder().decode([SharedRecipe].self, from: data)
+            recipeCache[cacheKey] = recipes
             incrementUsage()
-            return try JSONDecoder().decode([SharedRecipe].self, from: data)
+            return recipes
 
         } catch let error as AeroError {
             throw error
@@ -251,6 +308,44 @@ class AeroAIService {
         } catch {
             throw mapGenerateError(error)
         }
+    }
+
+    // MARK: - Retry with Fallback
+    //
+    // Attempt 1: gemini-2.5-flash          (immediate)
+    //   503 → wait 1s
+    // Attempt 2: gemini-2.5-flash          (retry)
+    //   503 → wait 3s
+    // Attempt 3: gemini-2.5-flash-lite     (fallback, separate infra)
+    //   fail → throw to caller for mapping
+    //
+    // Any non-503 error (quota, offline, auth) short-circuits immediately.
+
+    private func withRetryAndFallback(
+        primary: GenerativeModel,
+        fallback: GenerativeModel,
+        prompt: String
+    ) async throws -> GenerateContentResponse {
+        // Attempt 1: primary
+        do {
+            return try await primary.generateContent(prompt)
+        } catch {
+            guard (mapGenerateError(error) as? AeroError) == .serviceUnavailable else { throw error }
+        }
+
+        try? await Task.sleep(nanoseconds: 1_000_000_000) // 1s
+
+        // Attempt 2: primary retry
+        do {
+            return try await primary.generateContent(prompt)
+        } catch {
+            guard (mapGenerateError(error) as? AeroError) == .serviceUnavailable else { throw error }
+        }
+
+        try? await Task.sleep(nanoseconds: 3_000_000_000) // 3s
+
+        // Attempt 3: fallback model
+        return try await fallback.generateContent(prompt)
     }
 
     // MARK: - JSON Sanitizer
@@ -296,17 +391,6 @@ class AeroAIService {
         return nil
     }
 
-    // MARK: - Retry Helper
-
-    private func withRetry<T>(operation: () async throws -> T) async throws -> T {
-        do {
-            return try await operation()
-        } catch let err as AeroError where err == .serviceUnavailable {
-            try? await Task.sleep(nanoseconds: 2_000_000_000)
-            return try await operation()
-        }
-    }
-
     // MARK: - Error Mapper
 
     private func httpStatusCode(from error: Error) -> Int? {
@@ -320,6 +404,8 @@ class AeroAIService {
     }
 
     private func mapGenerateError(_ error: Error) -> Error {
+        if let aeroErr = error as? AeroError { return aeroErr }
+
         let nsErr = error as NSError
 
         if nsErr.domain == NSURLErrorDomain {
@@ -382,4 +468,3 @@ class AeroAIService {
         defaults.set(defaults.integer(forKey: usageKey) + 1, forKey: usageKey)
     }
 }
-
