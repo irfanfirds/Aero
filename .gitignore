@@ -44,5 +44,6 @@ Podfile.lock
 *.dSYM.zip
 *.dSYM
 
-# API Keys — never commit this file
+# API Keys and Firebase config — each developer keeps their own locally
 **/APIKeys.plist
+**/GoogleService-Info.plist
