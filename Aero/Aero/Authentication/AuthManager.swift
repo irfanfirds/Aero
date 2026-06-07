@@ -118,9 +118,7 @@ final class AuthManager: ObservableObject {
         }
 
         do {
-            let result = try await withTimeout {
-                try await Auth.auth().createUser(withEmail: email, password: password)
-            }
+            let result = try await Auth.auth().createUser(withEmail: email, password: password)
 
             if let name = fullName, !name.isEmpty {
                 let changeRequest = result.user.createProfileChangeRequest()
@@ -168,9 +166,7 @@ final class AuthManager: ObservableObject {
 
         print("AUTH_TRACE: calling Firebase signIn...")
         do {
-            let result = try await withTimeout {
-                try await Auth.auth().signIn(withEmail: email, password: password)
-            }
+            let result = try await Auth.auth().signIn(withEmail: email, password: password)
             print("AUTH_TRACE: Firebase signIn returned, emailVerified=\(result.user.isEmailVerified)")
             if result.user.isEmailVerified {
                 self.user = result.user
@@ -199,7 +195,7 @@ final class AuthManager: ObservableObject {
         defer { isProcessing = false }
 
         do {
-            try await withTimeout { try await Auth.auth().sendPasswordReset(withEmail: email) }
+            try await Auth.auth().sendPasswordReset(withEmail: email)
             authError = "✅ Reset link sent — check your inbox."
         } catch {
             print("DEBUG: Firebase Auth failed with error: \(error)")
