@@ -12,7 +12,7 @@ enum TabItem: String, CaseIterable, Identifiable {
         switch self {
         case .home: return "house.fill"
         case .items: return "qrcode.viewfinder"
-        case .recipes: return "xmark"
+        case .recipes: return "fork.knife"
         case .history: return "chart.bar.fill"
         }
     }

@@ -305,7 +305,7 @@ struct QuotaMeter: View {
                 
                 Spacer()
                 
-                Text("\(remaining) / 250 RPD")
+                Text("\(remaining) / 500 RPD")
                     .font(.system(size: BrutalistTheme.caption, weight: .black, design: .monospaced))
                     .foregroundColor(BrutalistTheme.brutalistBlack)
             }
@@ -323,11 +323,12 @@ struct QuotaMeter: View {
                 GeometryReader { geo in
                     RoundedRectangle(cornerRadius: 2)
                         .fill(meterColor)
-                        .frame(width: geo.size.width * CGFloat(percentage))
+                        .frame(width: geo.size.width * CGFloat(min(1.0, max(0.0, percentage))))
                         .frame(height: 6)
                 }
                 .frame(height: 6)
-                
+                .clipped()
+
                 RoundedRectangle(cornerRadius: 2)
                     .stroke(BrutalistTheme.brutalistBlack, lineWidth: 1)
                     .frame(height: 6)

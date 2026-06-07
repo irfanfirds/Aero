@@ -14,8 +14,6 @@ struct RootView: View {
     @EnvironmentObject var chatService: ChatService
     
     @State private var selectedTab: TabItem = .home
-    @State private var showClearAllConfirm = false
-    @State private var showClearPastConfirm = false
     
     var body: some View {
         Group {
@@ -48,34 +46,6 @@ struct RootView: View {
                         .padding(.horizontal)
                 }
                 .animation(.spring(), value: selectedTab)
-                .toolbar {
-                    ToolbarItemGroup(placement: .topBarTrailing) {
-                        if selectedTab == .history {
-                            Menu {
-                                Button(role: .destructive) { showClearAllConfirm = true } label: {
-                                    Label("Clear All History", systemImage: "trash")
-                                }
-                                Button { showClearPastConfirm = true } label: {
-                                    Label("Clear Past (Expired)", systemImage: "clock.arrow.circlepath")
-                                }
-                            } label: {
-                                Image(systemName: "ellipsis.circle")
-                            }
-                        }
-                    }
-                }
-                .confirmationDialog("Are you sure?", isPresented: $showClearAllConfirm, titleVisibility: .visible) {
-                    Button("Clear All History", role: .destructive) {
-                        historyStore.clearHistory()
-                    }
-                    Button("Cancel", role: .cancel) { }
-                }
-                .confirmationDialog("Clear past (expired) items?", isPresented: $showClearPastConfirm, titleVisibility: .visible) {
-                    Button("Clear Past", role: .destructive) {
-                        historyStore.clearPastHistory()
-                    }
-                    Button("Cancel", role: .cancel) { }
-                }
             } else {
                 // If false, show the login/registration screen
                 LoginView()

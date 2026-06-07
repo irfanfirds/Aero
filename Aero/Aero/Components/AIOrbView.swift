@@ -102,10 +102,6 @@ struct AIOrbView: View {
                 }
                 .padding(.horizontal, BrutalistTheme.spacingL)
                 .padding(.vertical, BrutalistTheme.spacingM)
-               
-                .padding(.vertical, BrutalistTheme.spacingM)
-                
-                .padding(.vertical, BrutalistTheme.spacingM)
                 
                 // Border
                 Rectangle()
@@ -198,16 +194,14 @@ struct AIOrbView: View {
                     .padding(.vertical, BrutalistTheme.spacingM)
                 }
                 .background(BrutalistTheme.brutalistWhite)
-                .onChange(of: isInputFocused) { focused in
+                .onChange(of: isInputFocused) { _, focused in
                     if focused {
-                        // Scroll to input spacer when keyboard appears (FIXED: Same as ChatTerminalView)
                         withAnimation(.easeInOut(duration: 0.3)) {
                             proxy.scrollTo("inputSpacer", anchor: .bottom)
                         }
                     }
                 }
-                .onChange(of: chatService.messages.count) { _ in
-                    // Scroll to latest message when new message arrives
+                .onChange(of: chatService.messages.count) { _, _ in
                     if let lastMessage = chatService.messages.last {
                         withAnimation {
                             proxy.scrollTo(lastMessage.id, anchor: .bottom)
@@ -394,7 +388,7 @@ struct QuotaMeterOrb: View {
                 
                 Spacer()
                 
-                Text("\(remaining) / 250 RPD")
+                Text("\(remaining) / 500 RPD")
                     .font(.system(size: BrutalistTheme.caption, weight: .black, design: .monospaced))
                     .foregroundColor(BrutalistTheme.brutalistBlack)
             }
@@ -416,11 +410,12 @@ struct QuotaMeterOrb: View {
                 GeometryReader { geo in
                     RoundedRectangle(cornerRadius: 4)
                         .fill(meterColor)
-                        .frame(width: geo.size.width * CGFloat(percentage))
+                        .frame(width: geo.size.width * CGFloat(min(1.0, max(0.0, percentage))))
                         .frame(height: 8)
                 }
                 .frame(height: 8)
-                
+                .clipped()
+
                 // Border
                 RoundedRectangle(cornerRadius: 4)
                     .stroke(BrutalistTheme.brutalistBlack, lineWidth: 2)
@@ -519,7 +514,7 @@ struct AIChefOrbVisualization: View {
         .onAppear {
             startAnimations()
         }
-        .onChange(of: chatService.currentState) { _ in
+        .onChange(of: chatService.currentState) { _, _ in
             startAnimations()
         }
     }
@@ -694,7 +689,8 @@ struct ChatMessageBubble: View {
 // MARK: - Typing Indicator Component (FIXED: Sandwich Method)
 struct TypingIndicator: View {
     @State private var animatingDot = 0
-    
+    @State private var timer: Timer?
+
     var body: some View {
         HStack {
             ZStack {
@@ -732,11 +728,15 @@ struct TypingIndicator: View {
             Spacer()
         }
         .onAppear {
-            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
+            timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
                 withAnimation {
                     animatingDot = (animatingDot + 1) % 3
                 }
             }
+        }
+        .onDisappear {
+            timer?.invalidate()
+            timer = nil
         }
     }
 }

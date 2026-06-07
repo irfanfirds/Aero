@@ -21,7 +21,7 @@ struct FoodItem: Identifiable, Codable {
     
     // NEW: Property to store scanned barcode/UPC/EAN data
     var barcode: String?
-    
+
     var userAction: ItemStatus? = nil
     
     var nutrients: Nutriments?

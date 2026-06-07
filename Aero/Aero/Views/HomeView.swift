@@ -9,7 +9,7 @@ struct HomeView: View {
 
     @EnvironmentObject var historyStore: HistoryStore
     @EnvironmentObject var chatService: ChatService
-    @AppStorage("displayName") private var displayName: String = "Alex"
+    @AppStorage("displayName") private var displayName: String = ""
     @State private var searchText = ""
     @State private var showManualEntry = false
     @State private var showScanner = false

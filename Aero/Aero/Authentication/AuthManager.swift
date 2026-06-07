@@ -50,6 +50,11 @@ final class AuthManager: ObservableObject {
                     let providerIDs = user.providerData.map { $0.providerID }
                     let isOAuth = providerIDs.contains("google.com") || providerIDs.contains("apple.com")
                     self?.isLoggedIn = isOAuth || user.isEmailVerified
+                    // Sync Firebase displayName → AppStorage so all views show the real name.
+                    if let name = user.displayName, !name.isEmpty {
+                        UserDefaults.standard.set(name, forKey: "displayName")
+                        UserDefaults.standard.set(name, forKey: "username")
+                    }
                 } else {
                     self?.isLoggedIn = false
                 }

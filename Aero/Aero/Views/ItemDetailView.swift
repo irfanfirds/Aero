@@ -123,6 +123,10 @@ struct ItemDetailView: View {
                             DetailRow(label: "IDENTIFIER", value: item.name.uppercased())
                             DetailRow(label: "CATEGORY", value: item.category.rawValue.uppercased())
                             DetailRow(label: "STATUS", value: item.status.rawValue.uppercased(), color: statusColor)
+
+                            if let nutrients = item.nutrients {
+                                NutritionCardView(nutrients: nutrients)
+                            }
                         }
                     }
                     .padding(.horizontal, 25)
@@ -144,7 +148,7 @@ struct ItemDetailView: View {
             let diff = Calendar.current.dateComponents([.day], from: Date(), to: item.expiryDate).day ?? 7
             editedShelfLife = Double(max(1, diff))
         }
-        .onChange(of: selectedItem) { newItem in
+        .onChange(of: selectedItem) { _, newItem in
             Task {
                 if let data = try? await newItem?.loadTransferable(type: Data.self) {
                     editedImageData = data
@@ -207,6 +211,74 @@ struct BrutalistEditField: View {
                         RoundedRectangle(cornerRadius: 4).stroke(BrutalistTheme.brutalistBlack, lineWidth: 2)
                     }
                 )
+        }
+    }
+}
+
+// MARK: - Nutrition Card
+
+struct NutritionCardView: View {
+    let nutrients: Nutriments
+
+    private let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("NUTRITION:")
+                .font(.system(size: 10, weight: .black))
+                .foregroundColor(BrutalistTheme.brutalistBlack.opacity(0.7))
+
+            Text("PER 100G")
+                .font(.system(size: 8, weight: .black, design: .monospaced))
+                .foregroundColor(BrutalistTheme.brutalistBlack.opacity(0.4))
+
+            ZStack {
+                RoundedRectangle(cornerRadius: BrutalistTheme.cornerRadiusMedium)
+                    .fill(BrutalistTheme.brutalistBlack)
+                    .offset(x: 4, y: 4)
+
+                RoundedRectangle(cornerRadius: BrutalistTheme.cornerRadiusMedium)
+                    .fill(BrutalistTheme.brutalistWhite)
+
+                LazyVGrid(columns: columns, spacing: 1) {
+                    NutritionMacroCell(label: "CALORIES", value: nutrients.caloriesDisplay, color: BrutalistTheme.brutalistYellow)
+                    NutritionMacroCell(label: "FAT",      value: nutrients.fatDisplay,      color: BrutalistTheme.brutalistLavender)
+                    NutritionMacroCell(label: "CARBS",    value: nutrients.carbsDisplay,    color: BrutalistTheme.brutalistCyan)
+                    NutritionMacroCell(label: "PROTEIN",  value: nutrients.proteinsDisplay, color: BrutalistTheme.brutalistLime)
+                    NutritionMacroCell(label: "FIBER",    value: nutrients.fiberDisplay,    color: Color(hex: "#D4E8C2"))
+                    NutritionMacroCell(label: "SUGARS",   value: nutrients.sugarsDisplay,   color: BrutalistTheme.brutalistCream)
+                }
+                .padding(6)
+
+                RoundedRectangle(cornerRadius: BrutalistTheme.cornerRadiusMedium)
+                    .stroke(BrutalistTheme.brutalistBlack, lineWidth: 2)
+            }
+        }
+    }
+}
+
+private struct NutritionMacroCell: View {
+    let label: String
+    let value: String
+    let color: Color
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 4)
+                .fill(color)
+            RoundedRectangle(cornerRadius: 4)
+                .stroke(BrutalistTheme.brutalistBlack, lineWidth: 1.5)
+            VStack(spacing: 2) {
+                Text(label)
+                    .font(.system(size: 8, weight: .black, design: .monospaced))
+                    .foregroundColor(BrutalistTheme.brutalistBlack.opacity(0.6))
+                Text(value)
+                    .font(.system(size: 12, weight: .black, design: .monospaced))
+                    .foregroundColor(BrutalistTheme.brutalistBlack)
+                    .minimumScaleFactor(0.6)
+            }
+            .padding(.vertical, 6)
+            .padding(.horizontal, 4)
         }
     }
 }

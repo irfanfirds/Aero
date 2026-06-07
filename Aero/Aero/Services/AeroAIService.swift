@@ -60,7 +60,7 @@ class AeroAIService {
     private var _recipeModel: GenerativeModel?
 
     // MARK: - Quota Tracking
-    private let quotaLimit = 250
+    private let quotaLimit = 500
     private let usageKey   = "AERO_DAILY_USAGE"
     private let dateKey    = "AERO_LAST_REQUEST_DATE"
 
@@ -147,12 +147,12 @@ class AeroAIService {
         checkAndResetDailyQuota()
         try checkQuota()
 
-        let model  = try chatModel()
+        let model  = chatModel()
         let context = inventory.map { $0.name }.joined(separator: ", ")
         let prompt  = "Current inventory: [\(context)]. User request: \(userMessage)"
 
         do {
-            let result = try await model.generateContent(prompt)
+            let result = try await withRetry { try await model.generateContent(prompt) }
             incrementUsage()
             return result.text ?? "CORE_SILENT"
         } catch {
@@ -166,7 +166,7 @@ class AeroAIService {
         checkAndResetDailyQuota()
         try checkQuota()
 
-        let model  = try insightModel()
+        let model  = insightModel()
         let prompt = """
         Analyze the sustainability impact of this food inventory: [\(inventory.joined(separator: ", "))].
         Return a JSON object with exactly these keys:
@@ -178,7 +178,7 @@ class AeroAIService {
         """
 
         do {
-            let result = try await model.generateContent(prompt)
+            let result = try await withRetry { try await model.generateContent(prompt) }
 
             guard let responseText = result.text, !responseText.isEmpty else {
                 throw AeroError.emptyResponse
@@ -209,7 +209,7 @@ class AeroAIService {
         checkAndResetDailyQuota()
         try checkQuota()
 
-        let model   = try recipeModel()
+        let model   = recipeModel()
         let primary = items.first ?? "available ingredients"
         let prompt  = """
         Generate exactly 2 creative recipes using these ingredients: [\(items.joined(separator: ", "))].
@@ -228,7 +228,7 @@ class AeroAIService {
         """
 
         do {
-            let result = try await model.generateContent(prompt)
+            let result = try await withRetry { try await model.generateContent(prompt) }
 
             guard let responseText = result.text, !responseText.isEmpty else {
                 throw AeroError.emptyResponse
@@ -296,7 +296,28 @@ class AeroAIService {
         return nil
     }
 
+    // MARK: - Retry Helper
+
+    private func withRetry<T>(operation: () async throws -> T) async throws -> T {
+        do {
+            return try await operation()
+        } catch let err as AeroError where err == .serviceUnavailable {
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
+            return try await operation()
+        }
+    }
+
     // MARK: - Error Mapper
+
+    private func httpStatusCode(from error: Error) -> Int? {
+        let ns = error as NSError
+        if ns.code >= 400 && ns.code < 600 { return ns.code }
+        if let underlying = ns.userInfo[NSUnderlyingErrorKey] as? NSError,
+           underlying.code >= 400 && underlying.code < 600 {
+            return underlying.code
+        }
+        return nil
+    }
 
     private func mapGenerateError(_ error: Error) -> Error {
         let nsErr = error as NSError
@@ -305,22 +326,32 @@ class AeroAIService {
             return AeroError.offline
         }
 
+        if let code = httpStatusCode(from: error) {
+            switch code {
+            case 503: return AeroError.serviceUnavailable
+            case 429: return AeroError.quotaExceeded
+            case 401, 403: return AeroError.invalidAPIKey
+            case 404: return AeroError.serviceUnavailable
+            default: break
+            }
+        }
+
         let desc = nsErr.localizedDescription.lowercased()
 
-        if desc.contains("not found") || desc.contains("404") || desc.contains("not supported") {
-            return AeroError.serviceUnavailable
-        }
-        if desc.contains("api key") || desc.contains("401") || desc.contains("unauthenticated") {
+        if desc.contains("api key") || desc.contains("unauthenticated") {
             return AeroError.invalidAPIKey
         }
-        if desc.contains("unavailable") || desc.contains("503") {
+        if desc.contains("unavailable") || desc.contains("503") || desc.contains("high demand") || desc.contains("overloaded") {
             return AeroError.serviceUnavailable
         }
-        if desc.contains("quota") || desc.contains("429") || desc.contains("rate") {
+        if desc.contains("quota") || desc.contains("429") || desc.contains("rate") || desc.contains("too many") {
             return AeroError.quotaExceeded
         }
+        if desc.contains("not found") || desc.contains("not supported") {
+            return AeroError.serviceUnavailable
+        }
 
-        return error
+        return AeroError.serviceUnavailable
     }
 
     // MARK: - Quota Management

@@ -8,9 +8,9 @@ struct SettingsView: View {
     @EnvironmentObject var historyStore: HistoryStore
     
     // 2. Local AppStorage Properties for User Profile Card
-    @AppStorage("username") private var username: String = "Alex Morgan"
+    @AppStorage("username") private var username: String = ""
     @AppStorage("userHandle") private var userHandle: String = "@aero_manifesto"
-    @AppStorage("displayName") private var displayName: String = "Alex Morgan"
+    @AppStorage("displayName") private var displayName: String = ""
     @AppStorage("dietaryRules") private var dietaryRules: String = "Vegetarian, No Nuts"
     @AppStorage("veganMode") private var veganMode: Bool = false
     @AppStorage("notificationsEnabled") private var notificationsEnabled: Bool = true

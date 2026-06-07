@@ -1,6 +1,5 @@
 import Foundation
 import Combine
-import FirebaseAI // Required to parse the underlying SDK error types
 
 enum AIState {
     case idle, thinking, speaking
@@ -12,7 +11,7 @@ class ChatService: ObservableObject {
     @Published var currentState: AIState = .idle
     
     // Explicitly published values so SwiftUI views update automatically
-    @Published var remainingQuota: Int = 250
+    @Published var remainingQuota: Int = 500
     @Published var quotaPercentage: Double = 1.0
     
     struct ChatMessage: Identifiable, Codable {
@@ -34,8 +33,8 @@ class ChatService: ObservableObject {
         // Stops execution here to prevent live AI service configuration calls from crashing the preview
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
             // Setup friendly mock states so your preview canvas UI displays values cleanly
-            self.remainingQuota = 175
-            self.quotaPercentage = 175.0 / 250.0
+            self.remainingQuota = 350
+            self.quotaPercentage = 350.0 / 500.0
             
             // Optional mock message to populate the preview UI out-of-the-box
             self.messages = [
@@ -53,7 +52,7 @@ class ChatService: ObservableObject {
         
         let currentQuota = AeroAIService.shared.getRemainingQuota()
         self.remainingQuota = currentQuota
-        self.quotaPercentage = Double(currentQuota) / 250.0
+        self.quotaPercentage = Double(currentQuota) / 500.0
     }
 
     func sendMessage(_ text: String, inventory: [FoodItem]) async {
@@ -93,26 +92,8 @@ class ChatService: ObservableObject {
             await MainActor.run {
                 self.isTyping = false
                 self.currentState = .idle
-                
-                // 🔍 --- CRITICAL AERO DEBUG LOG PRINT BLOCK ---
-                print("\n┌────────────────────────────────────────────────────────┐")
-                print("│              AERO CRITICAL NETWORK DEBUG LOG            │")
-                print("└────────────────────────────────────────────────────────┘")
-                print("👉 Raw Error Object Type: \(type(of: error))")
-                print("👉 Raw Error Details: \(error)")
-
-                // Instead of casting to FirebaseAI.GenerateContentError,
-                // use the NSError bridge to inspect the underlying error domain and code.
-                let nsError = error as NSError
-                print("👉 Error Domain: \(nsError.domain)")
-                print("👉 Error Code: \(nsError.code)")
-                print("👉 User Info: \(nsError.userInfo)")
-                print("──────────────────────────────────────────────────────────\n")
-                
-                // Fallback text outputted directly to your custom purple brutalist log screen
                 let displayError = error.localizedDescription
                 self.messages.append(ChatMessage(content: "SYSTEM_ERR: \(displayError.uppercased())", isUser: false))
-                
                 self.updateQuotaValues()
             }
         }

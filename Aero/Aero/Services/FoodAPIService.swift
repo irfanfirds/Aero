@@ -97,6 +97,32 @@ class FoodAPIService {
         }.resume()
     }
 
+    // MARK: - Name-Based Nutrition Search (Open Food Facts)
+    func searchByName(_ name: String, completion: @escaping (Nutriments?) -> Void) {
+        let encoded = name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? name
+        let urlString = "https://world.openfoodfacts.org/cgi/search.pl?search_terms=\(encoded)&json=1&page_size=1&fields=nutriments"
+        guard let url = URL(string: urlString) else {
+            completion(nil); return
+        }
+
+        struct SearchResponse: Codable {
+            let products: [SearchProduct]?
+        }
+        struct SearchProduct: Codable {
+            let nutriments: Nutriments?
+        }
+
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            guard let data, error == nil,
+                  let decoded = try? JSONDecoder().decode(SearchResponse.self, from: data),
+                  let nutrients = decoded.products?.first?.nutriments else {
+                DispatchQueue.main.async { completion(nil) }
+                return
+            }
+            DispatchQueue.main.async { completion(nutrients) }
+        }.resume()
+    }
+
     // MARK: - Image Download (unchanged)
     func downloadImage(from urlString: String, completion: @escaping (Data?) -> Void) {
         guard let url = URL(string: urlString) else {

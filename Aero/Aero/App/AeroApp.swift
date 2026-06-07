@@ -10,6 +10,7 @@ struct AeroApp: App {
     @StateObject private var historyStore = HistoryStore()
     @StateObject private var chatService = ChatService()
     @StateObject private var shoppingStore = ShoppingStore()
+    @StateObject private var recipeVM = RecipeViewModel()
 
     init() {
         // App Check provider MUST be set before FirebaseApp.configure().
@@ -31,6 +32,14 @@ struct AeroApp: App {
                 .environmentObject(historyStore)
                 .environmentObject(chatService)
                 .environmentObject(shoppingStore)
+                .environmentObject(recipeVM)
+                .onChange(of: authManager.isLoggedIn) { _, isLoggedIn in
+                    if isLoggedIn, let uid = authManager.user?.uid {
+                        historyStore.startFirestoreSync(uid: uid)
+                    } else {
+                        historyStore.stopFirestoreSync()
+                    }
+                }
         }
     }
 }

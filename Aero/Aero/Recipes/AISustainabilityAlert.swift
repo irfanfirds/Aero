@@ -107,31 +107,3 @@ private struct AlertActionButton: View {
     }
 }
 
-// MARK: - Reusable Brutalist Sandwich Modifier
-struct BrutalistBoxModifier: ViewModifier {
-    let cornerRadius: CGFloat
-    let fillColor: Color
-    let shadowOffset: CGFloat
-    
-    func body(content: Content) -> some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: cornerRadius)
-                .fill(BrutalistTheme.brutalistBlack)
-                .offset(x: shadowOffset, y: shadowOffset)
-            
-            RoundedRectangle(cornerRadius: cornerRadius)
-                .fill(fillColor)
-            
-            content
-            
-            RoundedRectangle(cornerRadius: cornerRadius)
-                .stroke(BrutalistTheme.brutalistBlack, lineWidth: BrutalistTheme.borderWidth)
-        }
-    }
-}
-
-extension View {
-    func brutalistBox(cornerRadius: CGFloat, fillColor: Color, shadowOffset: CGFloat) -> some View {
-        self.modifier(BrutalistBoxModifier(cornerRadius: cornerRadius, fillColor: fillColor, shadowOffset: shadowOffset))
-    }
-}

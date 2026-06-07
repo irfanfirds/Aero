@@ -164,6 +164,32 @@ extension ButtonStyle where Self == BrutalistKeyStyle {
     }
 }
 
+// MARK: - Brutalist Box Modifier (Sandwich Method: shadow → fill → border)
+struct BrutalistBoxModifier: ViewModifier {
+    let cornerRadius: CGFloat
+    let fillColor: Color
+    let shadowOffset: CGFloat
+
+    func body(content: Content) -> some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .fill(BrutalistTheme.brutalistBlack)
+                .offset(x: shadowOffset, y: shadowOffset)
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .fill(fillColor)
+            content
+            RoundedRectangle(cornerRadius: cornerRadius)
+                .stroke(BrutalistTheme.brutalistBlack, lineWidth: BrutalistTheme.borderWidth)
+        }
+    }
+}
+
+extension View {
+    func brutalistBox(cornerRadius: CGFloat, fillColor: Color, shadowOffset: CGFloat) -> some View {
+        self.modifier(BrutalistBoxModifier(cornerRadius: cornerRadius, fillColor: fillColor, shadowOffset: shadowOffset))
+    }
+}
+
 // MARK: - Dotted Pattern Background Component
 struct DottedPatternBackground: View {
     var dotColor: Color = BrutalistTheme.brutalistBlack.opacity(0.1)

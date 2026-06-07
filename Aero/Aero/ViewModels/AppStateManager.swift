@@ -4,24 +4,10 @@ import Combine // FIX: Resolves the missing module and conformance errors
 // REMOVED: The duplicate ShoppingItem struct declaration.
 // We are now safely using your pre-existing model.
 
-// Struct to represent items inside your fridge
-struct FridgeItem: Identifiable, Hashable {
-    let id = UUID()
-    let name: String
-    let category: String
-    let expiryDate: Date
-}
-
 @MainActor
 class AppStateManager: ObservableObject {
     static let shared = AppStateManager()
-    
-    // Core Collections
-    @Published var fridgeItems: [FridgeItem] = [
-        FridgeItem(name: "Avocado", category: "Fruits", expiryDate: Date().addingTimeInterval(172800)), // 2 days
-        FridgeItem(name: "Bread", category: "Bakery", expiryDate: Date().addingTimeInterval(86400))     // 1 day
-    ]
-    
+
     // FIX: Using an Array instead of a Set because your original ShoppingItem
     // might not conform to Hashable yet. This prevents strict hash conflicts.
     @Published var shoppingList: [ShoppingItem] = []
